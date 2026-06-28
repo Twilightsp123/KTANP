@@ -1,0 +1,68 @@
+.wire-board {
+  background: #111;
+  padding: 30px;
+  border: 2px solid #333;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  box-shadow: inset 0 0 50px #000;
+  width: 300px;
+}
+
+.wire-row {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.wire-idx {
+  color: var(--color-neon-blue);
+  font-family: monospace;
+  font-weight: bold;
+}
+
+.wire-cable {
+  flex: 1;
+  height: 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 0 5px 10px rgba(0,0,0,0.8);
+  position: relative;
+  transition: transform 0.1s;
+}
+
+.wire-cable:active {
+  transform: scaleY(0.8);
+}
+
+.wire-cable.cut {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.wire-cable.cut::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: -5px;
+  bottom: -5px;
+  width: 10px;
+  background: #111;
+}
+
+.spark {
+  position: absolute;
+  left: 48%;
+  top: -15px;
+  font-size: 1.5rem;
+  animation: spark 0.2s infinite alternate;
+}
+
+@keyframes spark {
+  from { opacity: 1; text-shadow: 0 0 10px yellow; transform: scale(1); }
+  to { opacity: 0; transform: scale(1.5); }
+}
+
+.color-black { background: #222; border-top: 2px solid #555; }
+.color-white { background: #ddd; border-top: 2px solid #fff; }

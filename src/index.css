@@ -1,0 +1,72 @@
+:root {
+  --color-bg-dark: #050a14;
+  --color-panel-bg: rgba(10, 15, 30, 0.6);
+  --color-panel-border: rgba(0, 240, 255, 0.2);
+  --color-neon-blue: #00f0ff;
+  --color-neon-blue-dim: rgba(0, 240, 255, 0.3);
+  --color-neon-red: #ff2a2a;
+  --color-neon-red-dim: rgba(255, 42, 42, 0.3);
+  --color-neon-gold: #ffd700;
+  --color-text-main: #e0f2fe;
+  --color-text-muted: #38bdf8;
+  
+  --shadow-glow-blue: 0 0 15px var(--color-neon-blue-dim), inset 0 0 10px var(--color-neon-blue-dim);
+  --shadow-glow-blue-strong: 0 0 25px var(--color-neon-blue), inset 0 0 15px var(--color-neon-blue);
+  --shadow-glow-red: 0 0 15px var(--color-neon-red-dim), inset 0 0 10px var(--color-neon-red-dim);
+  
+  --font-scifi: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--color-bg-dark);
+  background-image: 
+    linear-gradient(rgba(0, 240, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 240, 255, 0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+  color: var(--color-text-main);
+  font-family: var(--font-scifi);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+/* Holographic scanline overlay */
+body::after {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(255,255,255,0),
+    rgba(255,255,255,0) 50%,
+    rgba(0,0,0,0.1) 50%,
+    rgba(0,0,0,0.1)
+  );
+  background-size: 100% 4px;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Base Animations */
+@keyframes pulse {
+  0% { opacity: 0.8; }
+  50% { opacity: 1; text-shadow: 0 0 10px var(--color-neon-blue); }
+  100% { opacity: 0.8; }
+}
+
+@keyframes flicker {
+  0%, 19.999%, 22%, 62.999%, 64%, 64.999%, 70%, 100% {
+    opacity: 1;
+  }
+  20%, 21.999%, 63%, 63.999%, 65%, 69.999% {
+    opacity: 0.2;
+  }
+}
