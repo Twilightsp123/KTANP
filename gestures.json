@@ -1,0 +1,18 @@
+[
+  { "code": "[G:THUMB_UP]", "emoji": "👍", "description": "对/是/赞同" },
+  { "code": "[G:THUMB_DOWN]", "emoji": "👎", "description": "错/否/反对/不要" },
+  { "code": "[G:POINT_UP]", "emoji": "👆", "description": "上" },
+  { "code": "[G:POINT_DOWN]", "emoji": "👇", "description": "下/最后" },
+  { "code": "[G:POINT_LEFT]", "emoji": "👈", "description": "左/第一个" },
+  { "code": "[G:POINT_RIGHT]", "emoji": "👉", "description": "右/最后一个" },
+  { "code": "[G:WAVE]", "emoji": "👋", "description": "摆手/挥手/忽略" },
+  { "code": "[G:SHRUG]", "emoji": "🤷", "description": "耸肩/不知道/需要更多信息" },
+  { "code": "[G:SHAKE_HEAD]", "emoji": "🙅", "description": "摇头/错误" },
+  { "code": "[G:NOD]", "emoji": "🙆", "description": "点头/正确" },
+  { "code": "[G:FIST]", "emoji": "✊", "description": "握拳/长按/握住" },
+  { "code": "[G:FINGERS_1]", "emoji": "☝️", "description": "数字1" },
+  { "code": "[G:FINGERS_2]", "emoji": "✌️", "description": "数字2" },
+  { "code": "[G:FINGERS_3]", "emoji": "🤟", "description": "数字3" },
+  { "code": "[G:FINGERS_4]", "emoji": "🖖", "description": "数字4" },
+  { "code": "[G:FINGERS_5]", "emoji": "🖐", "description": "数字5/张开手/点按" }
+]

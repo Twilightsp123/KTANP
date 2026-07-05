@@ -19,11 +19,16 @@ const CommunicationContext = createContext<CommunicationContextType | undefined>
 export const CommunicationProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [channel, setChannel] = useState<BroadcastChannel | null>(null);
+  const [currentGameId, setCurrentGameId] = useState<string | null>(null);
 
   useEffect(() => {
-    // Abstracted transport layer. 
-    // For Prototype: BroadcastChannel (cross-tab local comms).
-    // For Production: Swap this with WebSocket (Socket.io) or WebRTC.
+    const bombBc = new BroadcastChannel('boombanana_bomb');
+    bombBc.onmessage = (event) => {
+      if (event.data.type === 'SYNC_STATUS' && event.data.payload.gameId) {
+        setCurrentGameId(event.data.payload.gameId);
+      }
+    };
+
     const bc = new BroadcastChannel('boombanana_comms');
     setChannel(bc);
 
@@ -33,6 +38,7 @@ export const CommunicationProvider: React.FC<{ children: ReactNode }> = ({ child
     };
 
     return () => {
+      bombBc.close();
       bc.close();
     };
   }, []);
@@ -52,6 +58,31 @@ export const CommunicationProvider: React.FC<{ children: ReactNode }> = ({ child
     // Broadcast to other tabs
     if (channel) {
       channel.postMessage(newMessage);
+    }
+
+    // Call Backend AI if sender is Observer
+    if (senderRole === 'OBSERVER') {
+      const activeGameId = currentGameId || 'dev-test-game-id';
+      fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ gameId: activeGameId, message: content })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.reply) {
+           const aiMessage: ChatMessage = {
+             id: Math.random().toString(36).substr(2, 9),
+             senderRole: 'DECODER',
+             content: data.reply,
+             timestamp: Date.now(),
+             type: 'TEXT'
+           };
+           setMessages(prev => [...prev, aiMessage]);
+           if (channel) channel.postMessage(aiMessage);
+        }
+      })
+      .catch(err => console.error("AI Communication error:", err));
     }
   };
 

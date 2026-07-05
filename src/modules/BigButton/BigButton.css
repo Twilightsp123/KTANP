@@ -1,0 +1,84 @@
+.big-button-terminal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.big-button-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+  background: #111;
+  padding: 50px;
+  border-radius: 20px;
+  border: 4px solid #333;
+  box-shadow: inset 0 0 50px #000;
+  margin-top: 20px;
+}
+
+.marquee-lights-container {
+  display: flex;
+  gap: 15px;
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.marquee-light {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid #444;
+  background: #222;
+  transition: all 0.1s;
+}
+
+.marquee-light.dim-red { background: #400; border-color: #600; box-shadow: 0 0 5px #f00 inset; }
+.marquee-light.dim-blue { background: #004; border-color: #006; box-shadow: 0 0 5px #00f inset; }
+.marquee-light.dim-yellow { background: #440; border-color: #660; box-shadow: 0 0 5px #ff0 inset; }
+
+.marquee-light.active-red { background: #f00; box-shadow: 0 0 20px #f00, inset 0 0 10px #fff; border-color: #faa; }
+.marquee-light.active-blue { background: #0ff; box-shadow: 0 0 20px #0ff, inset 0 0 10px #fff; border-color: #aff; }
+.marquee-light.active-yellow { background: #ff0; box-shadow: 0 0 20px #ff0, inset 0 0 10px #fff; border-color: #ffa; }
+
+.the-big-button {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  font-size: 2.5rem;
+  font-weight: 900;
+  letter-spacing: 5px;
+  cursor: pointer;
+  border: 10px solid #222;
+  box-shadow: 0 15px 20px rgba(0,0,0,0.8), inset 0 10px 20px rgba(255,255,255,0.2);
+  transition: transform 0.1s, box-shadow 0.1s;
+  text-shadow: 1px 1px 2px #000;
+  user-select: none;
+}
+
+.the-big-button.color-red { background: #d00; color: #fff; }
+.the-big-button.color-blue { background: #0044cc; color: #fff; }
+.the-big-button.color-yellow { background: #eecc00; color: #000; text-shadow: none; }
+.the-big-button.color-white { background: #ddd; color: #000; text-shadow: none; }
+
+.the-big-button:active, .the-big-button.held {
+  transform: translateY(10px) scale(0.95);
+  box-shadow: 0 5px 10px rgba(0,0,0,0.8), inset 0 15px 30px rgba(0,0,0,0.5);
+}
+
+.the-big-button.status-error {
+  animation: shake 0.5s;
+}
+
+.reset-mod-btn {
+  margin-top: 30px;
+  padding: 10px 30px;
+}
+
+.full-width-block {
+  grid-column: 1 / -1;
+}

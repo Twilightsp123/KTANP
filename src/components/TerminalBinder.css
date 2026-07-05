@@ -1,0 +1,95 @@
+.terminal-binder-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 800px; /* Take up majority of PanelFrame */
+  background: #111;
+  border-radius: 10px;
+  box-shadow: inset 0 0 50px rgba(0,0,0,0.9);
+  position: relative;
+  overflow: hidden;
+}
+
+.binder-nav-area {
+  width: 80px;
+  height: 100%;
+  background: #1a1a1a;
+  border: none;
+  border-right: 2px solid #333;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  z-index: 10;
+}
+.binder-nav-area.right {
+  border-right: none;
+  border-left: 2px solid #333;
+}
+
+.binder-nav-area:hover:not(.disabled) {
+  background: #2a2a2a;
+}
+.binder-nav-area:hover:not(.disabled) .nav-arrow {
+  color: var(--color-neon-blue);
+  text-shadow: 0 0 10px var(--color-neon-blue);
+}
+
+.binder-nav-area.disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.nav-arrow {
+  font-size: 3rem;
+  color: #555;
+  transition: all 0.2s;
+}
+
+.terminal-module-content {
+  flex: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  background: repeating-linear-gradient(
+    45deg,
+    #0f0f0f,
+    #0f0f0f 20px,
+    #151515 20px,
+    #151515 40px
+  );
+}
+
+.module-title-overlay {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background: rgba(0,0,0,0.8);
+  padding: 10px 20px;
+  border: 1px solid var(--color-neon-gold);
+  color: var(--color-neon-gold);
+  font-family: monospace;
+  letter-spacing: 2px;
+  font-size: 0.9rem;
+  z-index: 5;
+  box-shadow: 0 0 10px rgba(255,215,0,0.2);
+}
+
+.module-render-area {
+  flex: 1;
+  display: flex;
+  justify-content: flex-start; /* Shift puzzles to the left */
+  align-items: center;
+  padding: 40px;
+  padding-left: 80px; /* Give some breathing room from the left edge */
+}
+
+.module-render-area > div {
+  /* Ensure children can expand if they want to */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Align puzzle elements to the left */
+  justify-content: center;
+}

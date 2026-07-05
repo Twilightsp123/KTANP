@@ -1,6 +1,4 @@
 import React from 'react';
-import { FloatingCommsWidget } from '../../components/FloatingCommsWidget';
-import '../../components/FloatingComms.css';
 
 export const SignalGridManual: React.FC = () => {
   return (
@@ -35,8 +33,6 @@ export const SignalGridManual: React.FC = () => {
           </div>
         </div>
       </div>
-
-      <FloatingCommsWidget />
     </div>
   );
 };

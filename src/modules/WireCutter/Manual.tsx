@@ -1,6 +1,4 @@
 import React from 'react';
-import { FloatingCommsWidget } from '../../components/FloatingCommsWidget';
-import '../../components/FloatingComms.css';
 
 export const WireCutterManual: React.FC = () => {
   return (
@@ -43,8 +41,6 @@ export const WireCutterManual: React.FC = () => {
           </div>
         </div>
       </div>
-
-      <FloatingCommsWidget />
     </div>
   );
 };

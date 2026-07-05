@@ -1,9 +1,17 @@
 import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import { AILogger } from './AILogger';
 
+export interface BombMetaData {
+  serialNumber: string;
+  batteries: number;
+  indicator: string;
+}
+
 interface BombContextType {
+  gameId: string | null;
   timeLeft: number;
   status: 'IDLE' | 'RUNNING' | 'EXPLODED' | 'DEFUSED';
+  metaData: BombMetaData | null;
   deductTime: (seconds: number, reason: string) => void;
   startBomb: () => void;
 }
@@ -12,9 +20,24 @@ const BombContext = createContext<BombContextType | undefined>(undefined);
 
 const INITIAL_TIME = 180; // 3 minutes
 
+const generateMetaData = (): BombMetaData => {
+  const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  const numbers = "0123456789";
+  const randomChar = (str: string) => str[Math.floor(Math.random() * str.length)];
+  const serialNumber = `${randomChar(letters)}${randomChar(numbers)}${randomChar(letters)}-${randomChar(numbers)}${randomChar(letters)}`;
+  
+  const batteries = Math.floor(Math.random() * 4); // 0 to 3
+  const indicators = ["高压(FRK)", "通讯(CAR)", "异常(SND)", "无标签"];
+  const indicator = indicators[Math.floor(Math.random() * indicators.length)];
+
+  return { serialNumber, batteries, indicator };
+};
+
 export const BombProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+  const [gameId, setGameId] = useState<string | null>(null);
   const [timeLeft, setTimeLeft] = useState(INITIAL_TIME);
   const [status, setStatus] = useState<'IDLE' | 'RUNNING' | 'EXPLODED' | 'DEFUSED'>('IDLE');
+  const [metaData, setMetaData] = useState<BombMetaData | null>(generateMetaData());
   const [channel, setChannel] = useState<BroadcastChannel | null>(null);
 
   useEffect(() => {
@@ -29,13 +52,18 @@ export const BombProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         if (payload.status === 'RUNNING' && payload.timeLeft) {
             setTimeLeft(payload.timeLeft);
         }
+        if (payload.metaData) {
+            setMetaData(payload.metaData);
+        }
+        if (payload.gameId) {
+            setGameId(payload.gameId);
+        }
       }
     };
 
     return () => bc.close();
   }, []);
 
-  // Timer tick (Only one tab needs to drive this ideally, but running it on both is fine for a prototype if they are roughly in sync)
   useEffect(() => {
     if (status !== 'RUNNING') return;
 
@@ -56,11 +84,15 @@ export const BombProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   }, [status, channel]);
 
   const startBomb = () => {
+    const newGameId = `game-${Math.random().toString(36).substring(2, 9)}`;
+    const newMeta = generateMetaData();
+    setGameId(newGameId);
     setStatus('RUNNING');
     setTimeLeft(INITIAL_TIME);
-    AILogger.log('GAME_START', { time_limit: INITIAL_TIME });
+    setMetaData(newMeta);
+    AILogger.log('GAME_START', { time_limit: INITIAL_TIME, meta: newMeta, gameId: newGameId });
     if (channel) {
-      channel.postMessage({ type: 'SYNC_STATUS', payload: { status: 'RUNNING', timeLeft: INITIAL_TIME } });
+      channel.postMessage({ type: 'SYNC_STATUS', payload: { status: 'RUNNING', timeLeft: INITIAL_TIME, metaData: newMeta, gameId: newGameId } });
     }
   };
 
@@ -83,7 +115,7 @@ export const BombProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   };
 
   return (
-    <BombContext.Provider value={{ timeLeft, status, deductTime, startBomb }}>
+    <BombContext.Provider value={{ gameId, timeLeft, status, metaData, deductTime, startBomb }}>
       {children}
     </BombContext.Provider>
   );

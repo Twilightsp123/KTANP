@@ -14,7 +14,7 @@ const formatTime = (seconds: number) => {
 };
 
 export const PanelFrame: React.FC<PanelFrameProps> = ({ title, children }) => {
-  const { timeLeft, status, startBomb } = useBomb();
+  const { timeLeft, status, metaData, startBomb } = useBomb();
 
   return (
     <div className={`panel-frame status-${status.toLowerCase()}`}>
@@ -41,6 +41,7 @@ export const PanelFrame: React.FC<PanelFrameProps> = ({ title, children }) => {
           <span className="line"></span>
         </div>
       </div>
+
       <div className="panel-content">
         {status === 'EXPLODED' ? (
           <div className="explosion-screen">

@@ -1,12 +1,12 @@
 import { ComponentType } from 'react';
-import { FlipBoardTerminal } from '../modules/FlipBoard/Terminal';
-import { FlipBoardManual } from '../modules/FlipBoard/Manual';
 import { SignalGridTerminal } from '../modules/SignalGrid/Terminal';
 import { SignalGridManual } from '../modules/SignalGrid/Manual';
 import { WireCutterTerminal } from '../modules/WireCutter/Terminal';
 import { WireCutterManual } from '../modules/WireCutter/Manual';
 import { WaveformTerminal } from '../modules/Waveform/Terminal';
 import { WaveformManual } from '../modules/Waveform/Manual';
+import { BigButtonTerminal } from '../modules/BigButton/Terminal';
+import { BigButtonManual } from '../modules/BigButton/Manual';
 
 export interface PuzzleModule {
   id: string;
@@ -16,6 +16,12 @@ export interface PuzzleModule {
 }
 
 export const PuzzleRegistry: PuzzleModule[] = [
+  {
+    id: 'big-button',
+    name: '巨型按钮 (The Big Button)',
+    TerminalUI: BigButtonTerminal,
+    ManualUI: BigButtonManual,
+  },
   {
     id: 'waveform',
     name: 'Waveform Calibration',
@@ -33,11 +39,5 @@ export const PuzzleRegistry: PuzzleModule[] = [
     name: 'Signal Grid Prototype',
     TerminalUI: SignalGridTerminal,
     ManualUI: SignalGridManual,
-  },
-  {
-    id: 'flip-board',
-    name: 'Sector 7G Flip Board',
-    TerminalUI: FlipBoardTerminal,
-    ManualUI: FlipBoardManual,
   }
 ];

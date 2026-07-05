@@ -26,7 +26,7 @@ const generatePuzzle = () => {
 
 export const SignalGridTerminal: React.FC = () => {
   const { messages, sendMessage } = useCommunication();
-  const { deductTime } = useBomb();
+  const { deductTime, metaData } = useBomb();
   const [puzzle, setPuzzle] = useState(generatePuzzle);
   const [inputSequence, setInputSequence] = useState<ActionButton[]>([]);
   const [inputText, setInputText] = useState('');
@@ -82,12 +82,32 @@ export const SignalGridTerminal: React.FC = () => {
       <div className="puzzle-section terminal-puzzle">
         
         {/* Lights */}
-        <div className="lights-container">
-          {puzzle.lights.map((color, i) => (
-            <div key={i} className={`signal-light color-${color}`}>
-              <div className="light-core"></div>
+        <div className="signal-grid-container" style={{ position: 'relative', marginTop: '40px' }}>
+          {/* Metadata attached directly to this module like a physical plaque */}
+          {metaData && (
+            <div style={{ position: 'absolute', top: '-50px', left: '50%', transform: 'translateX(-50%)', background: '#222', border: '2px solid #444', padding: '5px 15px', borderRadius: '5px', display: 'flex', gap: '20px', color: 'var(--color-neon-gold)', alignItems: 'center', fontSize: '0.9rem', fontWeight: 'bold', boxShadow: '0 5px 15px rgba(0,0,0,0.5)', whiteSpace: 'nowrap' }}>
+              <span>S/N: {metaData.serialNumber}</span>
+              <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                BAT: 
+                {metaData.batteries === 0 && <span style={{ opacity: 0.5 }}> NONE</span>}
+                {Array.from({ length: metaData.batteries }).map((_, i) => (
+                  <svg key={i} width="16" height="8" viewBox="0 0 24 12" style={{ marginLeft: '2px' }}>
+                    <rect x="1" y="1" width="20" height="10" rx="1.5" fill="none" stroke="var(--color-neon-gold)" strokeWidth="1.5" />
+                    <rect x="3" y="3" width="16" height="6" fill="var(--color-neon-gold)" opacity="0.8" />
+                    <rect x="21" y="3.5" width="2" height="5" fill="var(--color-neon-gold)" />
+                  </svg>
+                ))}
+              </span>
+              <span>TAG: [{metaData.indicator}]</span>
             </div>
-          ))}
+          )}
+          <div className="signal-nodes">
+            {puzzle.lights.map((color, i) => (
+              <div key={i} className={`signal-light color-${color}`}>
+                <div className="light-core"></div>
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* Status Screen */}
@@ -116,28 +136,6 @@ export const SignalGridTerminal: React.FC = () => {
             </SciFiButton>
           </div>
         )}
-      </div>
-
-      {/* COMMUNICATION AREA */}
-      <div className="comms-section observer-comms">
-        <div className="chat-history">
-          {messages.map(msg => (
-            <div key={msg.id} className={`message ${msg.senderRole === 'OBSERVER' ? 'sent' : 'received'}`}>
-              <span className="sender">[{msg.senderRole}]</span>
-              <span className="content">{msg.content}</span>
-            </div>
-          ))}
-        </div>
-        <form className="chat-input-area" onSubmit={handleSend}>
-          <input 
-            type="text" 
-            value={inputText}
-            onChange={(e) => setInputText(e.target.value)}
-            placeholder="Type message to DECODER..."
-            className="scifi-input"
-          />
-          <SciFiButton type="submit">SEND</SciFiButton>
-        </form>
       </div>
     </div>
   );

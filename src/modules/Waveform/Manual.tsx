@@ -1,6 +1,4 @@
 import React from 'react';
-import { FloatingCommsWidget } from '../../components/FloatingCommsWidget';
-import '../../components/FloatingComms.css';
 
 export const WaveformManual: React.FC = () => {
   return (
@@ -42,8 +40,6 @@ export const WaveformManual: React.FC = () => {
           </div>
         </div>
       </div>
-
-      <FloatingCommsWidget />
     </div>
   );
 };
