@@ -62,15 +62,15 @@ export class DeepSeekProvider implements AIProvider {
     });
 
     if (!response.ok) {
-      throw new Error(\`DeepSeek API error: \${response.statusText}\`);
+      throw new Error(`DeepSeek API error: ${response.statusText}`);
     }
 
     const data = await response.json();
     let content = data.choices[0].message.content;
     
     // Fallback: cleanup if the model still wrapped in markdown despite instructions
-    if (content.startsWith('\`\`\`json')) {
-      content = content.replace(/\`\`\`json/g, '').replace(/\`\`\`/g, '').trim();
+    if (content.startsWith('```json')) {
+      content = content.replace(/```json/g, '').replace(/```/g, '').trim();
     }
     
     try {

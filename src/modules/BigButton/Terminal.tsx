@@ -28,8 +28,8 @@ export const BigButtonTerminal: React.FC = () => {
   const [status, setStatus] = useState<'IDLE' | 'ERROR' | 'SUCCESS'>('IDLE');
   const [inputText, setInputText] = useState('');
 
-  const holdTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const cycleIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const holdTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const cycleIntervalRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const pressStartTime = useRef<number>(0);
 
   const generatePuzzle = () => {
