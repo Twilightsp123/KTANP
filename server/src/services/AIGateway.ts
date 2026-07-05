@@ -1,6 +1,11 @@
 import { DeepSeekService } from './DeepSeekService';
 import OpenAI from 'openai';
-import gestures from '../../../gestures.json';
+import fs from 'fs';
+import path from 'path';
+
+// Read gestures dynamically to prevent TypeScript from attempting to compile files outside rootDir
+const gesturesFile = path.resolve(__dirname, '../../../../gestures.json');
+const gestures: Array<{ code: string, emoji: string, description: string }> = JSON.parse(fs.readFileSync(gesturesFile, 'utf-8'));
 
 interface GameSession {
   gameId: string;

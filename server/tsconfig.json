@@ -1,12 +1,14 @@
 {
   "compilerOptions": {
+    "rootDir": "./src",
     "target": "ES2022",
     "module": "CommonJS",
     "outDir": "./dist",
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true
   },
-  "include": ["src/**/*", "../src/core/Gestures.ts"]
+  "include": ["src/**/*"]
 }
