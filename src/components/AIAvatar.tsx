@@ -6,19 +6,26 @@ import { parseMessageContent } from '../utils/GestureRenderer';
 export const AIAvatar: React.FC = () => {
   const { messages } = useCommunication();
   const [activeMessage, setActiveMessage] = useState<ChatMessage | null>(null);
+  const [isThinking, setIsThinking] = useState(false);
 
   useEffect(() => {
-    const decoderMessages = messages.filter(m => m.senderRole === 'DECODER');
-    if (decoderMessages.length === 0) return;
+    if (messages.length === 0) return;
+    const latestMessage = messages[messages.length - 1];
 
-    const latest = decoderMessages[decoderMessages.length - 1];
-    setActiveMessage(latest);
-
-    const timer = setTimeout(() => {
+    if (latestMessage.senderRole === 'OBSERVER') {
+      // User just sent a message, hide old gesture and show thinking state
+      setIsThinking(true);
       setActiveMessage(null);
-    }, 8000);
+    } else if (latestMessage.senderRole === 'DECODER') {
+      // AI just replied, show gesture and stop thinking
+      setIsThinking(false);
+      setActiveMessage(latestMessage);
 
-    return () => clearTimeout(timer);
+      const timer = setTimeout(() => {
+        setActiveMessage(null);
+      }, 8000);
+      return () => clearTimeout(timer);
+    }
   }, [messages]);
 
   return (
@@ -31,10 +38,15 @@ export const AIAvatar: React.FC = () => {
         alignItems: 'flex-end',
         justifyContent: 'center',
         marginBottom: '20px',
-        opacity: activeMessage ? 1 : 0,
+        opacity: (activeMessage || isThinking) ? 1 : 0,
         transition: 'opacity 0.3s ease-in-out',
-        pointerEvents: 'none'
+        pointerEvents: 'none',
+        color: '#00f0ff',
+        fontFamily: 'monospace',
+        fontSize: '1.2rem',
+        textShadow: '0 0 10px #00f0ff'
       }}>
+        {isThinking && <div style={{ animation: 'pulse-slow 1s infinite' }}>[ PROCESSING... ]</div>}
         {activeMessage && parseMessageContent(activeMessage.content)}
       </div>
 
@@ -44,14 +56,14 @@ export const AIAvatar: React.FC = () => {
         height: '60px',
         borderRadius: '50%',
         background: 'radial-gradient(circle, #00f0ff 0%, #004455 70%, #000 100%)',
-        boxShadow: activeMessage 
+        boxShadow: (activeMessage || isThinking)
           ? '0 0 30px #00f0ff, inset 0 0 20px #fff' 
           : '0 0 10px #0088aa',
         border: '3px solid #00f0ff',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        animation: activeMessage ? 'pulse-fast 1s infinite' : 'pulse-slow 3s infinite',
+        animation: isThinking ? 'pulse-fast 0.5s infinite' : (activeMessage ? 'pulse-fast 1s infinite' : 'pulse-slow 3s infinite'),
       }}>
         <div style={{ width: '20px', height: '20px', borderRadius: '50%', background: '#fff', boxShadow: '0 0 10px #fff' }} />
       </div>
